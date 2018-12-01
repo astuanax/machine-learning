@@ -2,7 +2,8 @@
 
 ## Videos
 
-[10.9: Neural Networks: Matrix Math Part 3 - The Nature of Code] (https://www.youtube.com/watch?v=NgZAIkDcPkI "Neural Networks: Matrix Math Part 3")
+[Neural Networks - The Nature of Code](https://www.youtube.com/watch?v=XJ7HLz9VYz0&list=PLRqwX-V7Uu6aCibgK1PTWWu9by6XFdCfh "Neural Networks")
+Series of neural networtks video explaining the basics of a perceptron, matrix math and a simple neural network.
 
 
 ## Papers
