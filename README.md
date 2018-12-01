@@ -2,5 +2,7 @@
 
 ## Videos
 
+[10.9: Neural Networks: Matrix Math Part 3 - The Nature of Code] (https://www.youtube.com/watch?v=NgZAIkDcPkI "Neural Networks: Matrix Math Part 3")
+
 
 ## Papers
