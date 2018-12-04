@@ -156,6 +156,19 @@ class Matrix {
     })
   }
 
+  rank () {
+    const rref = this.rref()
+    let result = 0
+    for (let i = 0; i < rref.getCols(); ++i) {
+      result += rref.data[i][i]
+    }
+    return result
+  }
+
+  dimension () {
+    return this.rank()
+  }
+
   zeros () {
     return this.map(x => 0)
   }
