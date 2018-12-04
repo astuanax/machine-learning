@@ -19,21 +19,60 @@ class Matrix {
   }
 
   clone () {
-    return new Matrix(this.rows, this.cols, this.data.map(x => x.map(x=> x)))
+    return new Matrix(this.rows, this.cols, this.data.map(x => x.map(x => x)))
   }
 
-  map(func) {
+  map (func) {
     // Apply a function to every element of matrix
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        let val = this.data[i][j];
-        this.data[i][j] = func(val, i, j);
+        let val = this.data[i][j]
+        this.data[i][j] = func(val, i, j)
       }
     }
-    return this;
+    return this
   }
 
+  rref () {
+    let lead = 0
+    const resultMatrix = this.clone()
 
+    for (let r = 0; r < this.getRows(); ++r) {
+      if (this.getCols() <= lead) {
+        return resultMatrix
+      }
+      let i = r
+      while (resultMatrix.data[i][lead] === 0) {
+        ++i
+        if (this.getRows() === i) {
+          i = r
+          ++lead
+          if (this.getCols() === lead) {
+            return resultMatrix
+          }
+        }
+      }
+
+      let tmp = resultMatrix.data[i]
+      resultMatrix.data[i] = resultMatrix.data[r]
+      resultMatrix.data[r] = tmp
+
+      let val = resultMatrix.data[r][lead]
+      for (let j = 0; j < this.getCols(); ++j) {
+        resultMatrix.data[r][j] /= val
+      }
+
+      for (let i = 0; i < this.getRows(); ++i) {
+        if (i === r) continue
+        val = resultMatrix.data[i][lead]
+        for (let j = 0; j < this.getCols(); ++j) {
+          resultMatrix.data[i][j] -= val * resultMatrix.data[r][j]
+        }
+      }
+      lead++
+    }
+    return resultMatrix
+  }
 
   lu () {
     const n = this.rows
@@ -42,24 +81,24 @@ class Matrix {
     const L = new Matrix(this.rows, this.cols).zeros()
     const U = new Matrix(this.rows, this.cols).zeros()
 
-    for (let k=0; k < n; ++k) {
-      if (Math.abs(A.data[k][k]) < tol) throw Error("Cannot proceed without a row exchange")
+    for (let k = 0; k < n; ++k) {
+      if (Math.abs(A.data[k][k]) < tol) throw Error('Cannot proceed without a row exchange')
       L.data[k][k] = 1
-      for (let i=k+1; i<n; ++i) {
+      for (let i = k + 1; i < n; ++i) {
         L.data[i][k] = A.data[i][k] / A.data[k][k]
-        for (let j=k+1; j<n; ++j) {
+        for (let j = k + 1; j < n; ++j) {
           A.data[i][j] = A.data[i][j] - L.data[i][k] * A.data[k][j]
         }
       }
-      for (let l=k; l<n; ++l) {
+      for (let l = k; l < n; ++l) {
         U.data[k][l] = A.data[k][l]
       }
     }
 
-    return [L,U]
+    return [L, U]
   }
 
-  solve(b) {
+  solve (b) {
     const A = this.clone()
     const LU = A.lu()
     const L = LU[0]
@@ -69,16 +108,16 @@ class Matrix {
     const c = []
     const x = []
 
-    for (let k=0; k<n; ++k) {
-      for (let j=0; j<k; ++j) {
+    for (let k = 0; k < n; ++k) {
+      for (let j = 0; j < k; ++j) {
         s = s + L.data[k][j] * c[j]
       }
       c[k] = b[k] - s
       s = 0
     }
-    for (let a=n-1; a>-1; --a) {
+    for (let a = n - 1; a > -1; --a) {
       let t = 0
-      for (let b=a+1; b<n; ++b) {
+      for (let b = a + 1; b < n; ++b) {
         t = t + U.data[a][b] * x[b]
       }
       x[a] = (c[a] - t) / U.data[a][a]
@@ -86,20 +125,20 @@ class Matrix {
     return x
   }
 
-  static map(matrix, func) {
+  static map (matrix, func) {
     // Apply a function to every element of matrix
     return new Matrix(matrix.rows, matrix.cols)
-      .map((e, i, j) => func(matrix.data[i][j], i, j));
+      .map((e, i, j) => func(matrix.data[i][j], i, j))
   }
 
-  toArray() {
-    let arr = [];
+  toArray () {
+    let arr = []
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        arr.push(this.data[i][j]);
+        arr.push(this.data[i][j])
       }
     }
-    return arr;
+    return arr
   }
 
   identity () {
@@ -126,7 +165,7 @@ class Matrix {
   }
 
   randomize (f = e => Math.random() * 2 - 1) {
-    return this.map(f);
+    return this.map(f)
     // return this.map(x => Math.floor(Math.random() * 10))
   }
 
@@ -135,9 +174,9 @@ class Matrix {
   }
 
   isSymmetric () {
-    const a  = this.data
+    const a = this.data
     const b = Matrix.transpose(this).data
-    return !!a && !!b && !(a<b || b<a)
+    return !!a && !!b && !(a < b || b < a)
   }
 
   isPerpendicular (matrix) {
@@ -145,7 +184,7 @@ class Matrix {
     let b = matrix
     let c = Matrix.dot(a, b)
     let O = new Matrix(c.rows, c.cols).zeros()
-    return !!c && !!O && !(c<O || O<c)
+    return !!c && !!O && !(c < O || O < c)
   }
 
   getDimensions () {
@@ -202,8 +241,6 @@ class Matrix {
     }
   }
 
-
-
   static subtract (x, y) {
     if (y instanceof Matrix) {
       if (x.cols !== y.cols || x.rows !== y.rows) {
@@ -221,12 +258,12 @@ class Matrix {
 
       return new Matrix(x.rows, y.cols).map((e, i, j) => {
         // Dot product of values in col
-        let sum = 0;
+        let sum = 0
         for (let k = 0; k < x.cols; k++) {
-          sum += x.data[i][k] * y.data[k][j];
+          sum += x.data[i][k] * y.data[k][j]
         }
-        return sum;
-      });
+        return sum
+      })
     }
   }
 
@@ -241,7 +278,7 @@ class Matrix {
   multiply (y) {
     if (y instanceof Matrix) {
       if (this.cols !== y.cols || this.rows !== y.rows) {
-        console.log("Use static method 'dot' to do matrix multiplication")
+        console.log('Use static method \'dot\' to do matrix multiplication')
         throw new Error('Matrices do not match, cannot create hadamard product')
       }
       return this.map((val, i, j) => val * y.data[i][j])
