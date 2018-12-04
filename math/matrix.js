@@ -194,10 +194,6 @@ class Matrix {
     return !!c && !!O && !(c < O || O < c)
   }
 
-  getDimensions () {
-    return this.cols
-  }
-
   getCols () {
     return this.data[0].length
   }
