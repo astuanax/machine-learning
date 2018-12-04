@@ -15,7 +15,7 @@ class Matrix {
   }
 
   static fromArray (arr) {
-    return new Matrix(arr.length, 1).map((e, i) => arr[i])
+    return new Matrix(undefined, undefined, arr.map(x => x.map(x => x)))
   }
 
   clone () {
@@ -132,13 +132,7 @@ class Matrix {
   }
 
   toArray () {
-    let arr = []
-    for (let i = 0; i < this.rows; i++) {
-      for (let j = 0; j < this.cols; j++) {
-        arr.push(this.data[i][j])
-      }
-    }
-    return arr
+    return this.data.slice(0)
   }
 
   identity () {
