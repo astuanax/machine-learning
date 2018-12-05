@@ -144,10 +144,25 @@ class Matrix {
     })
   }
 
+  inverse () {
+    const A = this.clone()
+    const I = A.identity()
+    const Inv = A.concat(I).rref()
+
+    Inv.data = Inv.data.reduce((result, x, idx) => {
+      const half = x.length / 2
+      result.push(x.slice(half, x.length))
+      return result
+    }, [])
+    return Inv
+  }
+
   concat (matrix) {
-    this.data = this.data.map((x, idx) => {
+    const A = this.clone()
+    A.data = A.data.map((x, idx) => {
       return x.concat(matrix.data[idx])
     })
+    return A
   }
 
   rank () {
