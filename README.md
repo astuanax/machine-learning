@@ -19,6 +19,7 @@ OPen courseware lectures about linear algebra which provides a good start to und
 
 [Krizhevsky, A., Sutskever, I., & Hinton, G. E. (2012). Imagenet classification with deep convolutional neural networks. In Advances in neural information processing systems (pp. 1097-1105).](https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf)
 
+[Domingos, P. (2012). A few useful things to know about machine learning. Communications of the ACM, 55(10), 78-87.](http://www.centurion.link/w/_media/programming/a_few_useful_things_to_know_about_machine_learning.pdf)
 [Zeiler, M. D., & Fergus, R. (2014, September). Visualizing and understanding convolutional networks. In European conference on computer vision (pp. 818-833). Springer, Cham.](https://arxiv.org/pdf/1311.2901.pdf)
 
 [Coolen, A. C. C. (1998). A beginner’s guide to the mathematics of neural networks. In Concepts for Neural Networks (pp. 13-70). Springer, London.](https://pdfs.semanticscholar.org/280b/ad45331f1bc6ef49d3d6a2c781e00927a2dc.pdf)
@@ -41,3 +42,5 @@ Vector library with common mathematical operations such as dot product, distance
 #### Matrix.js
 
 Matrix library with common mathematical operations such as dot product, LU factorization. 
+
+* 
