@@ -38,4 +38,39 @@ Vector library with common mathematical operations such as dot product, distance
 
 Matrix library with common mathematical operations such as dot product, LU factorization. 
 
-* 
+##### Creating a Matrix:
+
+```new Matrix()
+new Matrix(2,3)
+new Matrix(2,3,[[-1,2,3],[7,5,-4]])
+```
+
+##### Methods
+
+* **fromArray [static]:** returns a Matrix object, array must be an array of arrays.
+* **toArray:** returns an array with the matrix data
+* **clone:** returns a copy of the current Matrix
+* **map(func):** maps over the data of the Matrix using the provided function
+* **map(func) [static]**
+* **rref:** returns the ROW REDUCED ECHELON FORM of the current Matrix
+* **lu:** factors a matrix as the product of a lower triangular matrix and an upper triangular matrix. REturns an array with 2 matricesL and U
+* **solve(b):** solves the Ax = b equation. Returns an array x
+* **identity:** returns the identity matrix
+* **inverse:** returns the inverse matrix if it exists
+* **concat:** concatenates 2 matrixes together
+* **rank:** returns the rank of dimension of a matrix
+* **dimension:** see rank
+* **ones:** filles the matrix data with 1 values
+* **zeros:** filles the matrix data with 0 values
+* **empty:** filles the matrix data with undefined
+* **isSymmetric:** returns a Boolean indicating whether the matrix is symmetric
+* **isPerpendicular(matrix):** returns a Boolean indicating whether the matrix procided is orthoganal to the curent matrix
+* **getCols:** 
+* **getRows:** 
+* **transpose [static]:** 
+* **add:** 
+* **subtract:** 
+* **dot [static]:** 
+* **multiply:** 
+* **hadamard:** 
+* **additiveinverse:** 
