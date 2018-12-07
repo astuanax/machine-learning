@@ -20,6 +20,10 @@ OPen courseware lectures about linear algebra which provides a good start to und
 7. [Coolen, A. C. C. (1998). A beginner’s guide to the mathematics of neural networks. In Concepts for Neural Networks (pp. 13-70). Springer, London.](https://pdfs.semanticscholar.org/280b/ad45331f1bc6ef49d3d6a2c781e00927a2dc.pdf)
 
 
+## Books
+
+1. [Petersen, K. B., & Pedersen, M. S. (2008). The matrix cookbook. Technical University of Denmark, 7(15), 510.](https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf)
+
 ## Libraries
 
 ### Machine learning
@@ -40,7 +44,8 @@ Matrix library with common mathematical operations such as dot product, LU facto
 
 ##### Creating a Matrix:
 
-```new Matrix()
+```
+new Matrix()
 new Matrix(2,3)
 new Matrix(2,3,[[-1,2,3],[7,5,-4]])
 ```
