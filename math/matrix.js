@@ -5,12 +5,15 @@
 
 class Matrix {
   constructor (...values) {
-    [this.rows, this.cols, this.data = []] = values
-    if (this.data.length === 0) {
-      this.data = Array.apply(null, Array(this.rows)).map(x => Array.apply(null, Array(this.cols)))
+    if (arguments.length === 1) {
+      this.data = arguments[0]
+      this.getCols()
+      this.getRows()
     } else {
-      this.rows = this.getRows()
-      this.cols = this.getCols()
+      [this.rows, this.cols, this.data = []] = values
+      if (this.data.length === 0) {
+        this.data = Array.apply(null, Array(this.rows)).map(x => Array.apply(null, Array(this.cols)))
+      }
     }
   }
 
