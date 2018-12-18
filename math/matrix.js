@@ -15,17 +15,17 @@ class Matrix {
   }
 
   static fromArray (arr) {
-    return new Matrix(undefined, undefined, arr.map(x => x.map(x => x)))
+    return new Matrix(arr.map(x => x.map(x => x)))
   }
 
   clone () {
-    return new Matrix(this.rows, this.cols, this.data.map(x => x.map(x => x)))
+    return new Matrix(this.getRows(), this.getCols(), this.data.map(x => x.map(x => x)))
   }
 
   map (func) {
     // Apply a function to every element of matrix
-    for (let i = 0; i < this.rows; i++) {
-      for (let j = 0; j < this.cols; j++) {
+    for (let i = 0; i < this.getRows(); i++) {
+      for (let j = 0; j < this.getCols(); j++) {
         let val = this.data[i][j]
         this.data[i][j] = func(val, i, j)
       }
@@ -75,11 +75,11 @@ class Matrix {
   }
 
   lu () {
-    const n = this.rows
+    const n = this.getRows()
     const tol = 1e-6
     const A = this.clone()
-    const L = new Matrix(this.rows, this.cols).zeros()
-    const U = new Matrix(this.rows, this.cols).zeros()
+    const L = new Matrix(this.getRows(), this.getCols()).zeros()
+    const U = new Matrix(this.getRows(), this.getCols()).zeros()
 
     for (let k = 0; k < n; ++k) {
       if (Math.abs(A.data[k][k]) < tol) throw Error('Cannot proceed without a row exchange')
@@ -94,7 +94,6 @@ class Matrix {
         U.data[k][l] = A.data[k][l]
       }
     }
-
     return [L, U]
   }
 
@@ -103,7 +102,7 @@ class Matrix {
     const LU = A.lu()
     const L = LU[0]
     const U = LU[1]
-    const n = this.rows
+    const n = this.getRows()
     let s = 0
     const c = []
     const x = []
@@ -127,7 +126,7 @@ class Matrix {
 
   static map (matrix, func) {
     // Apply a function to every element of matrix
-    return new Matrix(matrix.rows, matrix.cols)
+    return new Matrix(matrix.getRows(), matrix.getCols())
       .map((e, i, j) => func(matrix.data[i][j], i, j))
   }
 
@@ -136,10 +135,10 @@ class Matrix {
   }
 
   identity () {
-    if (this.cols !== this.rows) {
+    if (this.getCols() !== this.getRows()) {
       throw new Error('Matrix is not a square matrix')
     }
-    return new Matrix(this.rows, this.cols).map((val, idx, jdx) => {
+    return new Matrix(this.getRows(), this.getCols()).map((val, idx, jdx) => {
       return (idx === jdx) * 1
     })
   }
@@ -155,6 +154,18 @@ class Matrix {
       return result
     }, [])
     return Inv
+  }
+
+  lsq (b) {
+    const A = this.clone()
+    const At = Matrix.transpose(A)
+    const x = Matrix.dot(At, A).solve(Matrix.dot(At, b).data)
+
+    const X = new Matrix(x.map(x => [x]))
+    const P = Matrix.dot(A, X)
+    const E = Matrix.subtract(b, P)
+    return [x, P, E]
+
   }
 
   concat (matrix) {
@@ -202,10 +213,10 @@ class Matrix {
   }
 
   isPerpendicular (matrix) {
-    let a = new Matrix(this.rows, this.cols, this.data)
+    let a = new Matrix(this.getRows(), this.getCols(), this.data)
     let b = matrix
     let c = Matrix.dot(a, b)
-    let O = new Matrix(c.rows, c.cols).zeros()
+    let O = new Matrix(c.getRows(), c.getCols()).zeros()
     return !!c && !!O && !(c < O || O < c)
   }
 
@@ -239,7 +250,7 @@ class Matrix {
 
   add (y) {
     if (y instanceof Matrix) {
-      if (this.cols !== y.cols || this.rows !== y.rows) {
+      if (this.getCols() !== y.getCols() || this.getRows() !== y.getRows()) {
         throw new Error('Matrices do not match, cannot add')
       }
       return this.map((val, idx, jdx) => val + y.data[idx][jdx])
@@ -250,7 +261,7 @@ class Matrix {
 
   subtract (y) {
     if (y instanceof Matrix) {
-      if (this.cols !== y.cols || this.rows !== y.rows) {
+      if (this.getCols() !== y.getCols() || this.getRows() !== y.getRows()) {
         throw new Error('Matrices do not match, cannot add')
       }
       return this.map((val, idx, jdx) => val - y.data[idx][jdx])
@@ -261,23 +272,26 @@ class Matrix {
 
   static subtract (x, y) {
     if (y instanceof Matrix) {
-      if (x.cols !== y.cols || x.rows !== y.rows) {
+      if (x.getCols() !== y.getCols() || x.getRows() !== y.getRows()) {
         throw new Error('Matrices do not match, cannot subtract')
       }
-      return new Matrix(x.rows, x.cols).map((val, idx, jdx) => x.data[idx][jdx] - y.data[idx][jdx])
+      return new Matrix(x.getRows(), x.getCols()).map((val, idx, jdx) => x.data[idx][jdx] - y.data[idx][jdx])
     }
   }
 
   static dot (x, y) {
     if (y instanceof Matrix && x instanceof Matrix) {
-      if (x.cols !== y.rows) {
+      if (x.getCols() !== y.getRows()) {
+        console.log('dot', x.getCols(), y.getRows(), x.getCols(), y.getRows())
         throw new Error('Matrices do not match, cannot multiply')
       }
 
-      return new Matrix(x.rows, y.cols).map((e, i, j) => {
+      console.log('xy', x, y)
+
+      return new Matrix(x.getRows(), y.getCols()).map((e, i, j) => {
         // Dot product of values in col
         let sum = 0
-        for (let k = 0; k < x.cols; k++) {
+        for (let k = 0; k < x.getCols(); k++) {
           sum += x.data[i][k] * y.data[k][j]
         }
         return sum
@@ -295,7 +309,7 @@ class Matrix {
 
   multiply (y) {
     if (y instanceof Matrix) {
-      if (this.cols !== y.cols || this.rows !== y.rows) {
+      if (this.getCols() !== y.getCols() || this.getRows() !== y.getRows()) {
         console.log('Use static method \'dot\' to do matrix multiplication')
         throw new Error('Matrices do not match, cannot create hadamard product')
       }
@@ -307,4 +321,3 @@ class Matrix {
 }
 
 module.exports = Matrix
-
