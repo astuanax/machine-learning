@@ -223,53 +223,7 @@ test('mapping with instance map', () => {
   });
 });
 
-test('error handling of addition when columns and rows of A don\'t match columns and rows of B.', () => {
-  //Replace console.log with a jest mock so we can see if it has been called
-  global.console.log = jest.fn();
 
-  let m1 = new Matrix(1, 2);
-  let m2 = new Matrix(3, 4);
-  m1.add(m2);
-
-  //Check if the mock console.log has been called
-  expect(global.console.log).toHaveBeenCalledWith('Columns and Rows of A must match Columns and Rows of B.')
-});
-
-test('error handling of static subtraction when columns and rows of A don\'t match columns and rows of B.', () => {
-  //Replace console.log with a jest mock so we can see if it has been called
-  global.console.log = jest.fn();
-
-  let m1 = new Matrix(1, 2);
-  let m2 = new Matrix(3, 4);
-  Matrix.subtract(m1,m2);
-
-  //Check if the mock console.log has been called
-  expect(global.console.log).toHaveBeenCalledWith('Columns and Rows of A must match Columns and Rows of B.')
-});
-
-test('error handling of hadamard product when columns and rows of A don\'t match columns and rows of B.', () => {
-  //Replace console.log with a jest mock so we can see if it has been called
-  global.console.log = jest.fn();
-
-  let m1 = new Matrix(1, 2);
-  let m2 = new Matrix(3, 4);
-  m1.multiply(m2);
-
-  //Check if the mock console.log has been called
-  expect(global.console.log).toHaveBeenCalledWith('Columns and Rows of A must match Columns and Rows of B.')
-});
-
-test('error handling of matrix product when columns of A don\'t match rows of B.', () => {
-  //Replace console.log with a jest mock so we can see if it has been called
-  global.console.log = jest.fn();
-
-  let m1 = new Matrix(1, 2);
-  let m2 = new Matrix(3, 4);
-  Matrix.multiply(m1, m2);
-
-  //Check if the mock console.log has been called
-  expect(global.console.log).toHaveBeenCalledWith('Columns of A must match rows of B.')
-});
 
 test('printing', () => {
   //Replace console.table with a jest mock so we can see if it has been called
@@ -283,29 +237,7 @@ test('printing', () => {
   expect(global.console.table).toHaveBeenCalledWith(m1.data)
 });
 
-test('matrix from array', () => {
-  let array = [1, 2, 3];
-  let m = Matrix.fromArray(array);
-  expect(m).toEqual({
-    rows: 3,
-    cols: 1,
-    data: [
-      [1],
-      [2],
-      [3]
-    ]
-  });
-});
 
-test('matrix to array', () => {
-  let m = new Matrix(3, 3);
-  m.data[0] = [1, 2, 3];
-  m.data[1] = [4, 5, 6];
-  m.data[2] = [7, 8, 9];
-
-  let array = m.toArray();
-  expect(array).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9]);
-});
 
 test('chanining matrix methods', () => {
   let m = new Matrix(3, 3);
@@ -361,19 +293,6 @@ test('static map with row and column params', () => {
       [410, 511, 612],
       [720, 821, 922]
     ]
-  });
-});
-
-test('matrix (de)serialization', () => {
-  let m = new Matrix(5, 5);
-  m.randomize();
-
-  let n = Matrix.deserialize(m.serialize());
-
-  expect(n).toEqual({
-    rows: m.rows,
-    cols: m.cols,
-    data: m.data
   });
 });
 
