@@ -1,4 +1,3 @@
-// let Matrix = require('../codetrain/matrix')
 let Matrix = require('./matrix')
 
 
